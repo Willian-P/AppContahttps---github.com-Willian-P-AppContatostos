@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Detalhar</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>Habilitar Edição</ion-label>
+    <ion-toggle color="success"
+    (ionChange)="alterarEdicao()"></ion-toggle>
+  </ion-item >
+  <!--<ion-label>Detalhes do Contatos</ion-label> -->
+  <ion-list>
+    <form [formGroup]="form_cadastrar" (ngSubmit)="submitForm()">
+    <ion-item disabled="{{edicao}}">
+      <ion-input placeholder="Nome" formControlName="nome"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="((errorControl.nome.touched) ||
+    (errorControl.nome.dirty) && errorControl.nome.errors)">
+        <span *ngIf="errorControl.nome.errors?.required">
+            Nome é Obritatório!
+        </span>
+    </ion-item>
+    <ion-item disabled="{{edicao}}">
+      <ion-input placeholder="Telefone" formControlName="telefone"
+      [brmasker]="{mask:'(00)00000-0000', len:14}"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="((errorControl.telefone.touched) ||
+    (errorControl.telefone.dirty) && errorControl.telefone.errors)">
+        <span *ngIf="errorControl.telefone.errors?.required">
+            Telefone é Obritatório!
+        </span>
+        <span *ngIf="errorControl.telefone.errors?.minlength">
+          Telefone precisa ter 10 caracteres!
+      </span>
+    </ion-item>
+    <ion-item disabled="{{edicao}}">
+      <ion-select  placeholder="Selecione o Genero" formControlName="genero">
+        <ion-select-option value="Masculino">Masculino</ion-select-option>
+        <ion-select-option value="Feminino">Feminino</ion-select-option>
+        <ion-select-option value="Não-Declarar">Não declarar</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item *ngIf="((errorControl.genero.touched) ||
+    (errorControl.genero.dirty) && errorControl.genero.errors)">
+        <span *ngIf="errorControl.genero.errors?.required">
+            Genero é Obritatório!
+        </span>
+    </ion-item>
+    <ion-item>
+      <ion-label>Data de Nascimento:</ion-label>
+      <ion-datetime-button disabled="{{edicao}}" datetime="datetime"></ion-datetime-button>
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime formControlName="dataNascimento" id="datetime"
+          presentation="date" max="{{data}}"></ion-datetime>
+        </ng-template>
+      </ion-modal>
+    </ion-item>
+    <ion-item *ngIf="((errorControl.dataNascimento.touched) ||
+    (errorControl.dataNascimento.dirty) && errorControl.dataNascimento.errors)">
+        <span *ngIf="errorControl.dataNascimento.errors?.required">
+            Data de Nascimento é Obritatória!
+        </span>
+    </ion-item>
+
+    <!--Teste imagem
+    <ion-item>
+      <ion-button color="success" size="default" shape="round" class="img-input">
+        <input type="file" (change)="uploadFile($event.target)" formControlName="imagem">
+      </ion-button>
+    </ion-item>
+    -->
+    <ion-item>
+      <img src="{{contato.downloadURL}}"/>
+    </ion-item>
+    <ion-button disabled="{{edicao}}" expand="block" type="submit">Salvar</ion-button>
+    <ion-button disabled="{{edicao}}" expand="block"
+    (click)="excluir()" color="danger">Excluir</ion-button>
+  </form>
+  </ion-list>
+
+</ion-content>

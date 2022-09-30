@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Cadastro de Contatos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <form [formGroup]="form_cadastrar" (ngSubmit)="submitForm()">
+      <ion-item>
+        <ion-input placeholder="Nome" formControlName="nome"></ion-input>
+      </ion-item>
+
+      <!--Se está sujo ou tocado-->
+      <ion-item
+        *ngIf="(((errorControl.nome.touched)||
+    (errorControl.nome.dirty))&& errorControl.nome.errors)"
+      >
+        <span *ngIf="errorControl.nome.errors?.required">
+          Nome é obrigatório!
+        </span>
+      </ion-item>
+
+      <ion-item>
+        <ion-input
+          placeholder="Telefone" 
+          [brmasker]="{phone: true}"
+          formControlName="telefone"
+        ></ion-input>
+      </ion-item>
+      <ion-item
+        *ngIf="(((errorControl.telefone.touched)||
+    (errorControl.telefone.dirty))&& errorControl.telefone.errors)"
+      >
+        <span *ngIf="errorControl.telefone.errors?.required">
+          Telefone é obrigatório!
+        </span>
+        <span *ngIf="errorControl.telefone.errors?.minlength">
+          Telefone precisa ter 10 caracteres!
+        </span>
+      </ion-item>
+      <ion-item>
+        <ion-select placeholder="Selecione o Genero" formControlName="genero">
+          <ion-select-option value="Masculino">Masculino</ion-select-option>
+          <ion-select-option value="Feminino">Feminino</ion-select-option>
+          <ion-select-option value="Não-Declarar"
+            >Não Declarar</ion-select-option
+          >
+        </ion-select>
+      </ion-item>
+      <ion-item
+        *ngIf="(((errorControl.genero.touched)||
+    (errorControl.genero.dirty))&& errorControl.genero.errors)"
+      >
+        <span *ngIf="errorControl.genero.errors?.required">
+          Gênero é obrigatório!
+        </span>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Data de Nascimento</ion-label>
+        <ion-datetime-button datetime="datetime"></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime
+              id="datetime"
+              max="{{data}}"
+              presentation="date"
+              formControlName="dataNascimento"
+            ></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+
+      <ion-item>
+        <ion-button size="default" color="sucess" shape="round">
+          <input type="file" formControlName="imagem" (change)="uploadFile($event.target)" />
+        </ion-button>
+      </ion-item>
+
+      <ion-button expand="block" type="submit">Cadastrar</ion-button>
+    </form>
+  </ion-list>
+</ion-content>
